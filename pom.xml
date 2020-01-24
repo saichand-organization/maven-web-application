@@ -104,7 +104,7 @@
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository</name>
-	      <url>http://13.233.186.197:8081/repository/dhruva-snapshot/<url>
+	      <url>http://13.233.186.197:8081/repository/dhruva-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
