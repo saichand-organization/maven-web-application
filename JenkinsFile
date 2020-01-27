@@ -1,0 +1,57 @@
+node
+{
+    echo "GitHub BranhName ${env.BRANCH_NAME}"
+  echo "Jenkins Job Number ${env.BUILD_NUMBER}"
+  echo "Jenkins Node Name ${env.NODE_NAME}"
+  
+  echo "Jenkins Home ${env.JENKINS_HOME}"
+  echo "Jenkins URL ${env.JENKINS_URL}"
+  echo "JOB Name ${env.JOB_NAME}"
+    
+    
+     properties([
+     buildDiscarder(logRotator(numToKeepStr: '3')),
+     pipelineTriggers([
+         pollSCM('* * * * *')
+     ])
+   ])
+    def mavenhome=tool name: "maven3.6.3"
+    
+    stage('Checkout')
+    {
+        git branch: 'development', credentialsId: '27507d54-057f-4e5f-9670-bb60c2361d92', url: 'https://github.com/saichand-organization/maven-web-application.git'
+    }
+    
+    stage('Build')
+    {
+        sh "${mavenhome}/bin/mvn clean package"
+    }
+    
+    stage('ExecuteSonarQube Report')
+    {
+        sh "${mavenhome}/bin/mvn sonar:sonar"
+    }
+    
+    stage('Upload Artifactory into Nexus')
+    {
+        sh "${mavenhome}/bin/mvn deploy"
+    }
+    
+    stage('Deploy App into Tomcat')
+    {
+        sshagent(['9eb73426-76f0-4805-8712-c31d4065136d']) {
+      sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.79.252:/opt/apache-tomcat-9.0.30/webapps/"
+}
+    }
+    
+    stage('SendEmailNotification')
+    {
+        emailext body: '''Build is over
+
+Regards,
+saichand.''', subject: 'Build is over', to: 'saichandkotapati7@gmail.com'
+
+     }
+    }
+    
+    
