@@ -21,12 +21,12 @@ node
     {
         git branch: 'development', credentialsId: '27507d54-057f-4e5f-9670-bb60c2361d92', url: 'https://github.com/saichand-organization/maven-web-application.git'
     }
-    
+     /*
     stage('Build')
     {
         sh "${mavenhome}/bin/mvn clean package"
     }
-    /*
+    
     stage('ExecuteSonarQube Report')
     {
         sh "${mavenhome}/bin/mvn sonar:sonar"
