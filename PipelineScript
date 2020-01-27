@@ -26,7 +26,7 @@ node
     {
         sh "${mavenhome}/bin/mvn clean package"
     }
-    
+    /*
     stage('ExecuteSonarQube Report')
     {
         sh "${mavenhome}/bin/mvn sonar:sonar"
@@ -52,4 +52,5 @@ Regards,
 saichand.''', subject: 'Build is over', to: 'saichandkotapati7@gmail.com'
 
      }
+     */
     }
